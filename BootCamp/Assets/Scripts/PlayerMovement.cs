@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     public void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     public void Update()
