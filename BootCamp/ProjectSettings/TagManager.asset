@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Trap
   - Platform
+  - Knife
+  - Rock
+  - EnteringCrouchArea
+  - ExitingCrouchArea
   layers:
   - Default
   - TransparentFX

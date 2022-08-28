@@ -6,7 +6,7 @@ public class PlatformCollision : MonoBehaviour
 {
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.tag == "Trap")
+        if (collider.gameObject.tag == "Rock")
         {
             Destroy(collider.gameObject);
         }

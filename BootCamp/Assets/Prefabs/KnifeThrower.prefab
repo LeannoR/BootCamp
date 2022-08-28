@@ -139,7 +139,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b010e01ed3ce5274e806b32f8bba91e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidBody: {fileID: 3478296860290263328, guid: 5cab3587c010d9a4386d1317658bbfba, type: 3}
   noozle: {fileID: 2047722501865407429}
   knifePrefab: {fileID: 3478296860290263329, guid: 5cab3587c010d9a4386d1317658bbfba, type: 3}
   knifeSpeed: 10

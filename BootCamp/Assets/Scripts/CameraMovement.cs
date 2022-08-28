@@ -4,17 +4,43 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    [SerializeField] Vector3 offset;
+    private Camera camera;
+    [SerializeField] bool isLevelFinished = false;
+    [SerializeField] Vector3 offsetForPlay;
+    [SerializeField] Vector3 offsetForFinishingLevel;
     public Transform player;
+    public PlayerMovement playerMovement;
+
+    public void Start()
+    {
+        camera = Camera.main;
+    }
     public void Update()
     {
-        CameraPosition();
+        IsLevelFinished();
+        CameraPositionForPlay();
+        CameraPositionForFinishingLevel();
     }
 
-    public void CameraPosition()
+    public void CameraPositionForPlay()
     {
-        var cameraPos = player.position + offset;
-        //cameraPos.x = Mathf.Clamp(0,0,0);
-        transform.position = cameraPos;
+        if(isLevelFinished == false)
+        {
+            camera.transform.position = player.position + offsetForPlay;
+        }
+    }
+
+    public void CameraPositionForFinishingLevel()
+    {
+        if(isLevelFinished == true)
+        {
+            camera.transform.position = player.position + offsetForFinishingLevel;
+            camera.transform.LookAt(player);
+        }
+    }
+
+    public void IsLevelFinished()
+    {
+        isLevelFinished = playerMovement.isLevelFinished;
     }
 }
