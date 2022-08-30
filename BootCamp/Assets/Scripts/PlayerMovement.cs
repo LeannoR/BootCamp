@@ -7,20 +7,25 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 previousMousePos;
     private Rigidbody rigidBody;
     private Animator animator;
+    private MeshCollider meshCollider;
+    private BoxCollider boxCollider;
     private Vector3 startingPosition;
 
     public bool isPlayerInCrouchingArea = false;
-    [SerializeField] public bool isPlayerDead = false;
-    [SerializeField] public bool isLevelFinished = false;
-    [SerializeField] public bool isRunning = false;
-    [SerializeField] public float Multiplier = 1f;
-    [SerializeField] public float sideWaySpeed = 1f;
-    [SerializeField] public float forwardSpeed = 10f;
+    public bool isPlayerDead = false;
+    public bool isLevelFinished = false;
+    public bool isRunning = false;
+    public float Multiplier = 1f;
+    public float sideWaySpeed = 1f;
+    public float forwardSpeed = 10f;
 
     public void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
+        meshCollider = GetComponent<MeshCollider>();
+        boxCollider = GetComponent<BoxCollider>();
+
         startingPosition = transform.position;
     }
 
@@ -44,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && isLevelFinished == false && isPlayerDead == false)
         {
+            isRunning = true;
             previousMousePos = Input.mousePosition;
         }
         else if (Input.GetKey(KeyCode.Mouse0) && isLevelFinished == false && isPlayerDead == false)
@@ -76,6 +82,14 @@ public class PlayerMovement : MonoBehaviour
         {
             isRunning = false;
             animator.SetBool("StandToCrouch", true);
+            meshCollider.enabled = !meshCollider.enabled;
+            boxCollider.enabled = !boxCollider.enabled;
+        }
+        else if(Input.GetKeyDown(KeyCode.Mouse0) && isLevelFinished == false && isPlayerInCrouchingArea == true && isPlayerDead == false)
+        {
+            animator.SetBool("isRunning", true);
+            meshCollider.enabled = !meshCollider.enabled;
+            boxCollider.enabled = !boxCollider.enabled;
         }
     }
     public void LockHorizontalPosition()
@@ -94,11 +108,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void Respawn()
     {
+        isPlayerInCrouchingArea = false;
         transform.position = startingPosition;
         transform.rotation = Quaternion.Euler(Vector3.zero);
         isPlayerDead = false;
-        isPlayerInCrouchingArea = false;
         isRunning = false;
+        animator.SetBool("isRunning", false);
     }
 
     public void OnTriggerEnter(Collider collider)
@@ -112,16 +127,35 @@ public class PlayerMovement : MonoBehaviour
         else if (collider.gameObject.tag == "Knife" && isPlayerDead == false)
         {
             isRunning = false;
-            animator.SetBool("isRunning", false);
-            StartCoroutine(WaitForRespawn(2));
             isPlayerDead = true;
+            animator.SetBool("isRunning", false);
+            StartCoroutine(WaitForRespawn(3));
         }
 
         else if (collider.gameObject.tag == "Rock" && isPlayerDead == false)
         {
             isRunning = false;
-            StartCoroutine(WaitForRespawn(2));
             isPlayerDead = true;
+            animator.SetBool("isRunning", false);
+            StartCoroutine(WaitForRespawn(3));
+        }
+
+        else if (collider.gameObject.tag == "Blade" && isPlayerDead == false)
+        {
+            isRunning = false;
+            isPlayerDead = true;
+            animator.SetTrigger("SpikeDeath");
+            StartCoroutine(WaitForRespawn(3));
+            Debug.Log("Blade");
+        }
+
+        else if (collider.gameObject.tag == "Spear" && isPlayerDead == false)
+        {
+            isRunning = false;
+            isPlayerDead = true;
+            animator.SetTrigger("SpikeDeath");
+            StartCoroutine(WaitForRespawn(3));
+            Debug.Log("Spear");
         }
 
         else if(collider.gameObject.tag == "EnteringCrouchArea" && isPlayerInCrouchingArea == false)

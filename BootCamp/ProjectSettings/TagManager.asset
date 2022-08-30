@@ -10,6 +10,8 @@ TagManager:
   - Rock
   - EnteringCrouchArea
   - ExitingCrouchArea
+  - Blade
+  - Spear
   layers:
   - Default
   - TransparentFX
