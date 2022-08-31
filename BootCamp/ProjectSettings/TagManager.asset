@@ -12,6 +12,7 @@ TagManager:
   - ExitingCrouchArea
   - Blade
   - Spear
+  - TrapDoor
   layers:
   - Default
   - TransparentFX

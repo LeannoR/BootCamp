@@ -29,7 +29,6 @@ public class Finish : MonoBehaviour
         {
             isLevelFinished = true;
             finish.SetActive(true);
-            Debug.Log("Finish");
         }
     }
 

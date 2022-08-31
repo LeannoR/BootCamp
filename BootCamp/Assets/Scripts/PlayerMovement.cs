@@ -5,12 +5,16 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private Vector3 previousMousePos;
+    private Vector3 startingPosition;
+
     private Rigidbody rigidBody;
     private Animator animator;
     private MeshCollider meshCollider;
     private BoxCollider boxCollider;
-    private Vector3 startingPosition;
 
+    private bool flyAnimTriggered = false;
+
+    public bool isFlying = false;
     public bool isPlayerInCrouchingArea = false;
     public bool isPlayerDead = false;
     public bool isLevelFinished = false;
@@ -36,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
         Crouch();
         LockHorizontalPosition();
         LockPlayerRotation();
+        DeadFromHeight();
     }
 
     public void ForwardMovement()
@@ -98,14 +103,26 @@ public class PlayerMovement : MonoBehaviour
         pos.x = Mathf.Clamp(transform.position.x, -3, 3);
         transform.position = pos;
     }
-    
     public void LockPlayerRotation()
     {
         var rotation = transform.rotation;
         rotation.z = Mathf.Clamp(transform.rotation.z, 0, 0);
         transform.rotation = rotation;
     }
-
+    public void DeadFromHeight()
+    {
+        if (transform.position.y <= -10)
+        {
+            StartCoroutine(WaitForRespawn(1));
+        }
+        else if (transform.position.y <= -1 && flyAnimTriggered == false)
+        {
+            flyAnimTriggered = true;
+            isPlayerDead = true;
+            isFlying = true;
+            animator.SetTrigger("isFlying");
+        }
+    }
     public void Respawn()
     {
         isPlayerInCrouchingArea = false;
@@ -113,9 +130,16 @@ public class PlayerMovement : MonoBehaviour
         transform.rotation = Quaternion.Euler(Vector3.zero);
         isPlayerDead = false;
         isRunning = false;
+        isFlying = false;
         animator.SetBool("isRunning", false);
+        flyAnimTriggered = false;
+        forwardSpeed = 10f;
     }
-
+    public IEnumerator WaitForRespawn(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Respawn();
+    }
     public void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.tag == "Finish" && isPlayerDead == false)
@@ -123,7 +147,6 @@ public class PlayerMovement : MonoBehaviour
             isLevelFinished = true;
             animator.SetBool("isLevelFinished", true);
         }
-
         else if (collider.gameObject.tag == "Knife" && isPlayerDead == false)
         {
             isRunning = false;
@@ -131,7 +154,6 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("isRunning", false);
             StartCoroutine(WaitForRespawn(3));
         }
-
         else if (collider.gameObject.tag == "Rock" && isPlayerDead == false)
         {
             isRunning = false;
@@ -139,40 +161,31 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("isRunning", false);
             StartCoroutine(WaitForRespawn(3));
         }
-
         else if (collider.gameObject.tag == "Blade" && isPlayerDead == false)
         {
             isRunning = false;
             isPlayerDead = true;
             animator.SetTrigger("SpikeDeath");
             StartCoroutine(WaitForRespawn(3));
-            Debug.Log("Blade");
         }
-
         else if (collider.gameObject.tag == "Spear" && isPlayerDead == false)
         {
             isRunning = false;
             isPlayerDead = true;
             animator.SetTrigger("SpikeDeath");
             StartCoroutine(WaitForRespawn(3));
-            Debug.Log("Spear");
         }
-
+        else if (collider.gameObject.tag == "TrapDoor")
+        {
+            forwardSpeed = 0;
+        }
         else if(collider.gameObject.tag == "EnteringCrouchArea" && isPlayerInCrouchingArea == false)
         {
             isPlayerInCrouchingArea = true;
         }
-
         else if(collider.gameObject.tag == "ExitingCrouchArea" && isPlayerInCrouchingArea == true)
         {
             isPlayerInCrouchingArea = false;
         }
     }
-
-    public IEnumerator WaitForRespawn(float time)
-    {
-        yield return new WaitForSeconds(time);
-        Respawn();
-    }
-
 }
