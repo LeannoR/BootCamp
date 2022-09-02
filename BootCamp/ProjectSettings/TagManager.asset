@@ -13,6 +13,7 @@ TagManager:
   - Blade
   - Spear
   - TrapDoor
+  - Door
   layers:
   - Default
   - TransparentFX

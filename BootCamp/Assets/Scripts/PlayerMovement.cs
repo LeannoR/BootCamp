@@ -106,20 +106,25 @@ public class PlayerMovement : MonoBehaviour
     public void LockPlayerRotation()
     {
         var rotation = transform.rotation;
-        rotation.z = Mathf.Clamp(transform.rotation.z, 0, 0);
+        if(isPlayerDead == false)
+        {
+            rotation.x = Mathf.Clamp(transform.rotation.z, 0, 0);
+            rotation.z = Mathf.Clamp(transform.rotation.z, 0, 0);
+        }
         transform.rotation = rotation;
     }
     public void DeadFromHeight()
     {
         if (transform.position.y <= -10)
         {
-            StartCoroutine(WaitForRespawn(1));
+            StartCoroutine(WaitForRespawn(0));
         }
         else if (transform.position.y <= -1 && flyAnimTriggered == false)
         {
             flyAnimTriggered = true;
             isPlayerDead = true;
             isFlying = true;
+            isRunning = false;
             animator.SetTrigger("isFlying");
         }
     }
@@ -178,6 +183,12 @@ public class PlayerMovement : MonoBehaviour
         else if (collider.gameObject.tag == "TrapDoor")
         {
             forwardSpeed = 0;
+            Debug.Log("TrapDoor");
+        }
+        else if (collider.gameObject.tag == "Door")
+        {
+            Debug.Log("Door");
+            forwardSpeed = 10f;
         }
         else if(collider.gameObject.tag == "EnteringCrouchArea" && isPlayerInCrouchingArea == false)
         {
