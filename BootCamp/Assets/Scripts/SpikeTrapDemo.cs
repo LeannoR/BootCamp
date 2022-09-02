@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SpikeTrapDemo : MonoBehaviour {
 
+
     public Animator spikeTrapAnim;
 
     void Awake()

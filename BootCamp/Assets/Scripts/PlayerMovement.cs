@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Vector3 previousMousePos;
     private Vector3 startingPosition;
 
-    private Rigidbody rigidBody;
     private Animator animator;
     private MeshCollider meshCollider;
     private BoxCollider boxCollider;
 
     private bool flyAnimTriggered = false;
 
+    public bool isPlayerCrouching = false;
     public bool isFlying = false;
     public bool isPlayerInCrouchingArea = false;
     public bool isPlayerDead = false;
@@ -25,7 +24,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void Start()
     {
-        rigidBody = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
         meshCollider = GetComponent<MeshCollider>();
         boxCollider = GetComponent<BoxCollider>();
@@ -36,55 +34,53 @@ public class PlayerMovement : MonoBehaviour
     public void Update()
     {
         ForwardMovement();
-        SideWayMovement();
         Crouch();
-        LockHorizontalPosition();
         LockPlayerRotation();
         DeadFromHeight();
     }
 
     public void ForwardMovement()
     {
-        if(Input.GetKey(KeyCode.Mouse0) && isLevelFinished == false && isPlayerDead == false)
+        if(Input.touchCount > 0)
         {
-            transform.position = transform.position + Vector3.forward * forwardSpeed * Time.deltaTime;
-        }
-    }
-    public void SideWayMovement()
-    {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && isLevelFinished == false && isPlayerDead == false)
-        {
-            isRunning = true;
-            previousMousePos = Input.mousePosition;
-        }
-        else if (Input.GetKey(KeyCode.Mouse0) && isLevelFinished == false && isPlayerDead == false)
-        {
-            isRunning = true;
-
-            if(isPlayerInCrouchingArea)
+            Touch touch = Input.GetTouch(0);
+            if(touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
             {
-                animator.SetBool("StandToCrouch", false);
+                if(isLevelFinished == false && isPlayerDead == false)
+                {
+                    isRunning = true;
+                    transform.position = transform.position + Vector3.forward * forwardSpeed * Time.deltaTime;
+                    if (isPlayerInCrouchingArea)
+                    {
+                        animator.SetBool("StandToCrouch", false);
+                    }
+                    else if (!isPlayerInCrouchingArea)
+                    {
+                        animator.SetBool("isRunning", true);
+                    }
+                }
             }
-            else if(!isPlayerInCrouchingArea)
+            else if(touch.phase == TouchPhase.Ended && isLevelFinished == false && isPlayerDead == false)
             {
-                animator.SetBool("isRunning", true);
+                if (!isPlayerInCrouchingArea)
+                {
+                    isRunning = false;
+                    animator.SetBool("isRunning", false);
+                }
+                else if (isPlayerInCrouchingArea)
+                {
+                    isRunning = false;
+                    isPlayerCrouching = true;
+                    animator.SetBool("StandToCrouch", true);
+                }
             }
-
-            var newpos = Input.mousePosition;
-            var difpos = newpos - previousMousePos;
-            var horizontal = difpos.x * Time.deltaTime * Multiplier;
-            transform.position = transform.position + transform.right * horizontal;
-        }
-        else if(Input.GetKeyUp(KeyCode.Mouse0) && isLevelFinished == false && isPlayerInCrouchingArea == false && isPlayerDead == false)
-        {
-            isRunning = false;
-            animator.SetBool("isRunning", false);
         }
     }
     public void Crouch()
     {
         if (Input.GetKeyUp(KeyCode.Mouse0) && isLevelFinished == false && isPlayerInCrouchingArea == true && isPlayerDead == false)
         {
+            isPlayerCrouching = true;
             isRunning = false;
             animator.SetBool("StandToCrouch", true);
             meshCollider.enabled = !meshCollider.enabled;
@@ -92,16 +88,11 @@ public class PlayerMovement : MonoBehaviour
         }
         else if(Input.GetKeyDown(KeyCode.Mouse0) && isLevelFinished == false && isPlayerInCrouchingArea == true && isPlayerDead == false)
         {
+            isPlayerCrouching = false;
             animator.SetBool("isRunning", true);
             meshCollider.enabled = !meshCollider.enabled;
             boxCollider.enabled = !boxCollider.enabled;
         }
-    }
-    public void LockHorizontalPosition()
-    {
-        var pos = transform.position;
-        pos.x = Mathf.Clamp(transform.position.x, -3, 3);
-        transform.position = pos;
     }
     public void LockPlayerRotation()
     {
@@ -115,11 +106,11 @@ public class PlayerMovement : MonoBehaviour
     }
     public void DeadFromHeight()
     {
-        if (transform.position.y <= -10)
+        if (transform.position.y <= startingPosition.y - 8)
         {
             StartCoroutine(WaitForRespawn(0));
         }
-        else if (transform.position.y <= -1 && flyAnimTriggered == false)
+        else if (transform.position.y <= startingPosition.y - 1 && flyAnimTriggered == false)
         {
             flyAnimTriggered = true;
             isPlayerDead = true;
@@ -130,14 +121,15 @@ public class PlayerMovement : MonoBehaviour
     }
     public void Respawn()
     {
+        isPlayerCrouching = false;
         isPlayerInCrouchingArea = false;
-        transform.position = startingPosition;
-        transform.rotation = Quaternion.Euler(Vector3.zero);
         isPlayerDead = false;
         isRunning = false;
         isFlying = false;
-        animator.SetBool("isRunning", false);
         flyAnimTriggered = false;
+        transform.position = startingPosition;
+        transform.rotation = Quaternion.Euler(Vector3.zero);
+        animator.SetBool("isRunning", false);
         forwardSpeed = 10f;
     }
     public IEnumerator WaitForRespawn(float time)
@@ -156,14 +148,14 @@ public class PlayerMovement : MonoBehaviour
         {
             isRunning = false;
             isPlayerDead = true;
-            animator.SetBool("isRunning", false);
+            animator.SetTrigger("SpikeDeath");
             StartCoroutine(WaitForRespawn(3));
         }
         else if (collider.gameObject.tag == "Rock" && isPlayerDead == false)
         {
             isRunning = false;
             isPlayerDead = true;
-            animator.SetBool("isRunning", false);
+            animator.SetTrigger("SpikeDeath");
             StartCoroutine(WaitForRespawn(3));
         }
         else if (collider.gameObject.tag == "Blade" && isPlayerDead == false)
@@ -183,11 +175,9 @@ public class PlayerMovement : MonoBehaviour
         else if (collider.gameObject.tag == "TrapDoor")
         {
             forwardSpeed = 0;
-            Debug.Log("TrapDoor");
         }
         else if (collider.gameObject.tag == "Door")
         {
-            Debug.Log("Door");
             forwardSpeed = 10f;
         }
         else if(collider.gameObject.tag == "EnteringCrouchArea" && isPlayerInCrouchingArea == false)

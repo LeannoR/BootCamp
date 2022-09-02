@@ -26,7 +26,7 @@ public class CameraController : MonoBehaviour
         isLevelFinished = playerMovement.isLevelFinished;
         isPlayerInCrouchingArea = playerMovement.isPlayerInCrouchingArea;
 
-        if(!isLevelFinished && !isPlayerInCrouchingArea || isPlayerDead)
+        if(!isLevelFinished && !isPlayerInCrouchingArea)
         {
             animator.SetBool("sideLookCamera", false);
         }

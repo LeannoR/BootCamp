@@ -16,9 +16,9 @@ public class TrapDoorDemo : MonoBehaviour {
     IEnumerator OpenCloseTrap()
     {
         TrapDoorAnim.SetTrigger("open");
-        yield return new WaitForSeconds(2.25f);
+        yield return new WaitForSeconds(2);
         TrapDoorAnim.SetTrigger("close");
-        yield return new WaitForSeconds(2.25f);
+        yield return new WaitForSeconds(2);
         StartCoroutine(OpenCloseTrap());
 
     }
