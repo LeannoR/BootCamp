@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5642951099207189571}
-  - component: {fileID: 4147097523263483109}
   m_Layer: 0
   m_Name: BridgePathHalfBroken
   m_TagString: Platform
@@ -35,18 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4147097523263483109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5642951099207189568}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d38d1065abf89eb49919428bf2b245cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5642951099204066953
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -206,6 +193,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Bld_Ruin_Bridge_01
       objectReference: {fileID: 0}
+    - target: {fileID: 1703676809739110, guid: 097c5a4d264cb6345a838634488be3a2, type: 3}
+      propertyPath: m_TagString
+      value: Platform
+      objectReference: {fileID: 0}
     - target: {fileID: 4329293484498010, guid: 097c5a4d264cb6345a838634488be3a2, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -264,11 +255,29 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 097c5a4d264cb6345a838634488be3a2, type: 3}
+--- !u!1 &5641259210141080665 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1703676809739110, guid: 097c5a4d264cb6345a838634488be3a2, type: 3}
+  m_PrefabInstance: {fileID: 5642951100149688127}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5638695131958213477 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4329293484498010, guid: 097c5a4d264cb6345a838634488be3a2, type: 3}
   m_PrefabInstance: {fileID: 5642951100149688127}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &5178049715336103353
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641259210141080665}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.733447, y: 1.703618, z: 4.999687}
+  m_Center: {x: 0.00011467934, y: 0.07611939, z: 2.5}
 --- !u!1001 &5642951100967512414
 PrefabInstance:
   m_ObjectHideFlags: 0

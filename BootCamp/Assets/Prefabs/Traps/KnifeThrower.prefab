@@ -105,7 +105,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2047722501865407429}
-  - component: {fileID: 2047722501865407428}
+  - component: {fileID: 7764473935803066437}
   m_Layer: 0
   m_Name: Noozle
   m_TagString: Untagged
@@ -127,7 +127,7 @@ Transform:
   m_Father: {fileID: 2047722501344077890}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
---- !u!114 &2047722501865407428
+--- !u!114 &7764473935803066437
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -136,11 +136,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2047722501865407430}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b010e01ed3ce5274e806b32f8bba91e6, type: 3}
+  m_Script: {fileID: 11500000, guid: da98473ec975d1e48915035db60326f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   noozle: {fileID: 2047722501865407429}
   knifePrefab: {fileID: 3478296860290263329, guid: 5cab3587c010d9a4386d1317658bbfba, type: 3}
   knifeSpeed: 10
-  fireRate: 1
-  nextFire: 0
+  fireRate: 2
+  nextFire: 1

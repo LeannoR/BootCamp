@@ -78,21 +78,26 @@ public class PlayerMovement : MonoBehaviour
     }
     public void Crouch()
     {
-        if (Input.GetKeyUp(KeyCode.Mouse0) && isLevelFinished == false && isPlayerInCrouchingArea == true && isPlayerDead == false)
+        if(Input.touchCount > 0)
         {
-            isPlayerCrouching = true;
-            isRunning = false;
-            animator.SetBool("StandToCrouch", true);
-            meshCollider.enabled = !meshCollider.enabled;
-            boxCollider.enabled = !boxCollider.enabled;
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began && isLevelFinished == false && isPlayerInCrouchingArea == true && isPlayerDead == false)
+            {
+                isPlayerCrouching = true;
+                isRunning = false;
+                animator.SetBool("StandToCrouch", true);
+                meshCollider.enabled = !meshCollider.enabled;
+                boxCollider.enabled = !boxCollider.enabled;
+            }
+            else if (touch.phase == TouchPhase.Ended && isLevelFinished == false && isPlayerInCrouchingArea == true && isPlayerDead == false)
+            {
+                isPlayerCrouching = false;
+                animator.SetBool("isRunning", true);
+                meshCollider.enabled = !meshCollider.enabled;
+                boxCollider.enabled = !boxCollider.enabled;
+            }
         }
-        else if(Input.GetKeyDown(KeyCode.Mouse0) && isLevelFinished == false && isPlayerInCrouchingArea == true && isPlayerDead == false)
-        {
-            isPlayerCrouching = false;
-            animator.SetBool("isRunning", true);
-            meshCollider.enabled = !meshCollider.enabled;
-            boxCollider.enabled = !boxCollider.enabled;
-        }
+        
     }
     public void LockPlayerRotation()
     {
