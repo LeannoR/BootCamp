@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+
     private Vector3 startingPosition;
 
     private Animator animator;
-    private MeshCollider meshCollider;
-    private BoxCollider boxCollider;
+    private ParticleSystem particleSystem;
 
     private bool flyAnimTriggered = false;
 
@@ -25,8 +25,7 @@ public class PlayerMovement : MonoBehaviour
     public void Start()
     {
         animator = GetComponentInChildren<Animator>();
-        meshCollider = GetComponent<MeshCollider>();
-        boxCollider = GetComponent<BoxCollider>();
+        particleSystem = GetComponentInChildren<ParticleSystem>();
 
         startingPosition = transform.position;
     }
@@ -86,15 +85,11 @@ public class PlayerMovement : MonoBehaviour
                 isPlayerCrouching = true;
                 isRunning = false;
                 animator.SetBool("StandToCrouch", true);
-                meshCollider.enabled = !meshCollider.enabled;
-                boxCollider.enabled = !boxCollider.enabled;
             }
             else if (touch.phase == TouchPhase.Ended && isLevelFinished == false && isPlayerInCrouchingArea == true && isPlayerDead == false)
             {
                 isPlayerCrouching = false;
                 animator.SetBool("isRunning", true);
-                meshCollider.enabled = !meshCollider.enabled;
-                boxCollider.enabled = !boxCollider.enabled;
             }
         }
         
@@ -154,6 +149,7 @@ public class PlayerMovement : MonoBehaviour
             isRunning = false;
             isPlayerDead = true;
             animator.SetTrigger("SpikeDeath");
+            particleSystem.Play();
             StartCoroutine(WaitForRespawn(3));
         }
         else if (collider.gameObject.tag == "Rock" && isPlayerDead == false)
@@ -161,6 +157,7 @@ public class PlayerMovement : MonoBehaviour
             isRunning = false;
             isPlayerDead = true;
             animator.SetTrigger("SpikeDeath");
+            particleSystem.Play();
             StartCoroutine(WaitForRespawn(3));
         }
         else if (collider.gameObject.tag == "Blade" && isPlayerDead == false)
@@ -168,6 +165,7 @@ public class PlayerMovement : MonoBehaviour
             isRunning = false;
             isPlayerDead = true;
             animator.SetTrigger("SpikeDeath");
+            particleSystem.Play();
             StartCoroutine(WaitForRespawn(3));
         }
         else if (collider.gameObject.tag == "Spear" && isPlayerDead == false)
@@ -175,6 +173,7 @@ public class PlayerMovement : MonoBehaviour
             isRunning = false;
             isPlayerDead = true;
             animator.SetTrigger("SpikeDeath");
+            particleSystem.Play();
             StartCoroutine(WaitForRespawn(3));
         }
         else if (collider.gameObject.tag == "TrapDoor")
