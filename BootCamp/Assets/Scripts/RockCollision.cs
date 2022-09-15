@@ -8,7 +8,6 @@ public class RockCollision : MonoBehaviour
     private Rigidbody rigidBody;
     private MeshRenderer meshRenderer;
     private MeshCollider meshCollider;
-    private bool willDestroyed = false;
 
     public void Start()
     {
@@ -25,7 +24,6 @@ public class RockCollision : MonoBehaviour
             Destroy(rigidBody);
             Destroy(meshRenderer);
             Destroy(meshCollider);
-            willDestroyed = true;
             StartCoroutine(WaitForDestroy(2));
         }
     }

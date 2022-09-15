@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1637446126582564, guid: a1644dd8880d0594d970514153034e86, type: 3}
       propertyPath: m_Name
-      value: TrapDoor (3)
+      value: MovingDoor
       objectReference: {fileID: 0}
     - target: {fileID: 4881404980133362, guid: a1644dd8880d0594d970514153034e86, type: 3}
       propertyPath: m_RootOrder
@@ -67,10 +67,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 95222640213664392, guid: a1644dd8880d0594d970514153034e86, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1644dd8880d0594d970514153034e86, type: 3}
 --- !u!1 &3210842340331577048 stripped
@@ -100,6 +96,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f545c898fe935234bb2fc7691a2dde69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  easeType: 1
+  wantedZPos: 0
+  wantedTime: 0
 --- !u!65 &1589807368
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -17,8 +17,11 @@ public class AnimatorEvents : MonoBehaviour
     public void AnimationCrouched()
     {
         IsCrouched = true;
-        meshColliderParent.enabled = !meshColliderParent.enabled;
-        boxColliderParent.enabled = !boxColliderParent.enabled;
+        if(meshColliderParent.enabled == true)
+        {
+            meshColliderParent.enabled = !meshColliderParent.enabled;
+            boxColliderParent.enabled = !boxColliderParent.enabled;
+        }
     }
 
     public void AnimationIdleOrRunning()

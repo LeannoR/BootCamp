@@ -19,7 +19,6 @@ public class PlayerMovement : MonoBehaviour
     public bool isLevelFinished = false;
     public bool isRunning = false;
     public float Multiplier = 1f;
-    public float sideWaySpeed = 1f;
     public float forwardSpeed = 10f;
 
     public void Start()
@@ -80,13 +79,13 @@ public class PlayerMovement : MonoBehaviour
         if(Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began && isLevelFinished == false && isPlayerInCrouchingArea == true && isPlayerDead == false)
+            if (touch.phase == TouchPhase.Ended && isLevelFinished == false && isPlayerInCrouchingArea == true && isPlayerDead == false)
             {
                 isPlayerCrouching = true;
                 isRunning = false;
                 animator.SetBool("StandToCrouch", true);
             }
-            else if (touch.phase == TouchPhase.Ended && isLevelFinished == false && isPlayerInCrouchingArea == true && isPlayerDead == false)
+            else if (touch.phase == TouchPhase.Began && isLevelFinished == false && isPlayerInCrouchingArea == true && isPlayerDead == false)
             {
                 isPlayerCrouching = false;
                 animator.SetBool("isRunning", true);
@@ -99,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
         var rotation = transform.rotation;
         if(isPlayerDead == false)
         {
-            rotation.x = Mathf.Clamp(transform.rotation.z, 0, 0);
+            rotation.x = Mathf.Clamp(transform.rotation.x, 0, 0);
             rotation.z = Mathf.Clamp(transform.rotation.z, 0, 0);
         }
         transform.rotation = rotation;
@@ -110,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(WaitForRespawn(0));
         }
-        else if (transform.position.y <= startingPosition.y - 1 && flyAnimTriggered == false)
+        else if (transform.position.y <= startingPosition.y - 1 && flyAnimTriggered == false && isPlayerDead == false)
         {
             flyAnimTriggered = true;
             isPlayerDead = true;
@@ -130,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
         transform.position = startingPosition;
         transform.rotation = Quaternion.Euler(Vector3.zero);
         animator.SetBool("isRunning", false);
-        forwardSpeed = 10f;
+        forwardSpeed = 7f;
     }
     public IEnumerator WaitForRespawn(float time)
     {
@@ -182,7 +181,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (collider.gameObject.tag == "Door")
         {
-            forwardSpeed = 10f;
+            forwardSpeed = 7f;
         }
         else if(collider.gameObject.tag == "EnteringCrouchArea" && isPlayerInCrouchingArea == false)
         {
