@@ -6,9 +6,9 @@ public class TransparentObjects : MonoBehaviour
 {
     public Material mainMaterial;
     public Material transparentMaterial;
+    public PlayerMovement playerMovement;
 
     private MeshRenderer meshRenderer;
-    public PlayerMovement playerMovement;
     private bool isSideCameraActive;
 
     public void Start()

@@ -6,6 +6,7 @@ public class KnifeThrower : MonoBehaviour
 {
     public Transform noozle;
     public GameObject knifePrefab;
+
     public float knifeSpeed = 10f;
     public float fireRate = 2f;
     public float nextFire = 1f;
